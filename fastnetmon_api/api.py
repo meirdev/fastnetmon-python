@@ -7,6 +7,8 @@ from .types import (
     BanSettings,
     BanSettingsRequired,
     BaseResponse,
+    FlowSpecRule,
+    FlowSpecRuleAnnounce,
     GlobalIntOptions,
     GlobalStrOptions,
     HostGroupBoolOptions,
@@ -204,5 +206,22 @@ class FastNetMonAPI:
 
     async def commit(self):
         res = await self.client.put("/commit")
+
+        return self._parse_response(res)
+
+    async def add_flow_spec_rule(self, flow_spec_rule: FlowSpecRule):
+        res = await self.client.put("/flowspec", json=flow_spec_rule)
+
+        return self._parse_response(res)
+
+    async def get_flow_spec_rules(self, mitigation_uuid: str):
+        res = await self.client.get(f"/flowspec/{mitigation_uuid}")
+
+        data = self._parse_response(res, ArrayResponse[FlowSpecRuleAnnounce])
+
+        return data["values"]
+
+    async def remove_flow_spec_rule(self, mitigation_uuid: str):
+        res = await self.client.delete(f"/flowspec/{mitigation_uuid}")
 
         return self._parse_response(res)

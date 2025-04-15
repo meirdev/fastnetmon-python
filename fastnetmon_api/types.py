@@ -130,6 +130,11 @@ class FlowSpecRule(TypedDict, total=False):
     ipv4_nexthops: list[str]
 
 
+class FlowSpecRuleAnnounce(TypedDict):
+    uuid: str
+    announce: FlowSpecRule
+
+
 class ThresholdStructure(TypedDict):
     flows: bool
     mbits: bool
