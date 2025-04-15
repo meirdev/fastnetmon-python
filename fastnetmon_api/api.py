@@ -15,6 +15,10 @@ from .types import (
 )
 
 
+class FastNetMonAPIError(Exception):
+    pass
+
+
 class FastNetMonAPI:
     def __init__(self, host: str, port: int, user: str, password: str) -> None:
         base_url = f"http://{host}:{port}"
@@ -45,11 +49,7 @@ class FastNetMonAPI:
         data: T = response.json()
 
         if not data["success"]:
-            raise httpx.HTTPStatusError(
-                data["error_text"],
-                request=response.request,
-                response=response,
-            )
+            raise FastNetMonAPIError(data["error_text"])
 
         if type_ is BaseResponse:
             return None
