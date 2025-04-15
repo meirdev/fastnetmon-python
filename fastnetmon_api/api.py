@@ -9,10 +9,11 @@ from .types import (
     BaseResponse,
     FlowSpecRule,
     FlowSpecRuleAnnounce,
-    GlobalIntOptions,
-    GlobalStrOptions,
+    GlobalListIntOptions,
+    GlobalListStrOptions,
     HostGroupBoolOptions,
     HostGroupIntOptions,
+    HostGroupListStrOptions,
     HostGroupStrOptions,
 )
 
@@ -99,7 +100,10 @@ class FastNetMonAPI:
 
     @overload
     async def set_host_group_option(
-        self, host_group: str, option: HostGroupStrOptions, value: str
+        self,
+        host_group: str,
+        option: HostGroupStrOptions | HostGroupListStrOptions,
+        value: str,
     ) -> None: ...
 
     @overload
@@ -123,7 +127,10 @@ class FastNetMonAPI:
 
     @overload
     async def remove_host_group_option(
-        self, host_group: str, option: HostGroupStrOptions, value: str
+        self,
+        host_group: str,
+        option: HostGroupStrOptions | HostGroupListStrOptions,
+        value: str,
     ) -> None: ...
 
     @overload
@@ -152,6 +159,11 @@ class FastNetMonAPI:
 
     @overload
     async def get_host_group_option(
+        self, host_group: str, option: HostGroupListStrOptions
+    ) -> list[str]: ...
+
+    @overload
+    async def get_host_group_option(
         self, host_group: str, option: HostGroupBoolOptions
     ) -> bool: ...
 
@@ -162,16 +174,16 @@ class FastNetMonAPI:
 
     async def get_host_group_option(
         self, host_group: str, option: str
-    ) -> str | int | bool:
+    ) -> list[str] | str | int | bool:
         res = await self.client.get(f"/hostgroup/{host_group}/{option}")
 
         return self._parse_response(res)  # type: ignore
 
     @overload
-    async def set_option(self, option: GlobalIntOptions, value: int) -> None: ...
+    async def set_option(self, option: GlobalListIntOptions, value: int) -> None: ...
 
     @overload
-    async def set_option(self, option: GlobalStrOptions, value: str) -> None: ...
+    async def set_option(self, option: GlobalListStrOptions, value: str) -> None: ...
 
     async def set_option(self, option: str, value: str | int | bool) -> None:
         value = self._get_option_value(value)
@@ -181,10 +193,10 @@ class FastNetMonAPI:
         return self._parse_response(res)
 
     @overload
-    async def remove_option(self, option: GlobalIntOptions, value: int) -> None: ...
+    async def remove_option(self, option: GlobalListIntOptions, value: int) -> None: ...
 
     @overload
-    async def remove_option(self, option: GlobalStrOptions, value: str) -> None: ...
+    async def remove_option(self, option: GlobalListStrOptions, value: str) -> None: ...
 
     async def remove_option(self, option: str, value: str | int | bool) -> None:
         value = self._get_option_value(value)
@@ -194,10 +206,10 @@ class FastNetMonAPI:
         return self._parse_response(res)
 
     @overload
-    async def get_option(self, option: GlobalIntOptions) -> list[int]: ...
+    async def get_option(self, option: GlobalListIntOptions) -> list[int]: ...
 
     @overload
-    async def get_option(self, option: GlobalIntOptions) -> list[str]: ...
+    async def get_option(self, option: GlobalListStrOptions) -> list[str]: ...
 
     async def get_option(self, option: str) -> list[str] | list[int] | str | int | bool:
         res = await self.client.delete(f"/main/{option}")

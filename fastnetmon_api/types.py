@@ -90,12 +90,15 @@ type HostGroupIntOptions = Literal[
 type HostGroupStrOptions = Literal[
     "name",
     "description",
+]
+
+type HostGroupListStrOptions = Literal[
     "networks",
 ]
 
-type GlobalStrOptions = Literal["networks_list",]
+type GlobalListStrOptions = Literal["networks_list",]
 
-type GlobalIntOptions = Literal[
+type GlobalListIntOptions = Literal[
     "sflow_ports",
     "netflow_ports",
 ]
