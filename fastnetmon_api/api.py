@@ -75,12 +75,12 @@ class FastNetMonAPI:
 
         return data
 
-    async def remove_host_group(self, name: HostGroupOptions):
+    async def remove_host_group(self, name: str):
         res = await self.client.delete(f"/hostgroup/{name}")
 
         return self._parse_response(res)
 
-    async def get_host_group(self, name: HostGroupOptions):
+    async def get_host_group(self, name: str):
         res = await self.client.get(f"/hostgroup/{name}")
 
         data = self._parse_response(res, ArrayResponse[BanSettingsRequired])
