@@ -58,7 +58,8 @@ class BanSettingsRequired(TypedDict):
     threshold_icmp_pps: int
 
 
-type HostGroupBoolOptions = Literal[
+type HostGroupOptions = Literal[
+    # bool
     "ban_for_pps",
     "ban_for_bandwidth",
     "ban_for_flows",
@@ -71,9 +72,7 @@ type HostGroupBoolOptions = Literal[
     "ban_for_tcp_syn_pps",
     "ban_for_udp_pps",
     "ban_for_icmp_pps",
-]
-
-type HostGroupIntOptions = Literal[
+    # int
     "threshold_pps",
     "threshold_mbps",
     "threshold_flows",
@@ -85,20 +84,17 @@ type HostGroupIntOptions = Literal[
     "threshold_tcp_syn_pps",
     "threshold_udp_pps",
     "threshold_icmp_pps",
-]
-
-type HostGroupStrOptions = Literal[
+    # str
     "name",
     "description",
-]
-
-type HostGroupListStrOptions = Literal[
+    # list[str]
     "networks",
 ]
 
-type GlobalListStrOptions = Literal["networks_list",]
-
-type GlobalListIntOptions = Literal[
+type GlobalOptions = Literal[
+    # list[str]
+    "networks_list",
+    # int
     "sflow_ports",
     "netflow_ports",
 ]
